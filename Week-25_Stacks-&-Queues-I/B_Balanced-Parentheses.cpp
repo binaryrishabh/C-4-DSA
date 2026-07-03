@@ -26,27 +26,21 @@ signed main() {
 		
 		stack<char> st;
 		
-		bool ans = false;
+		bool invalid = false;
 		for(char ch : str) {
 			if(opening(ch)) {
 				st.push(ch);
 			}
 			else {
-				if(st.empty()) {
-					ans = true;
+				if(st.empty() || !valid(st, ch)) {
+					invalid = true;
 					break;
 				}
-				if(valid(st, ch)) {
-					st.pop();
-				}
-				else {
-					ans = true;
-					break;
-				}
+				st.pop();
 			}
 		}
 		
-		if(ans || st.size() != 0) cout << "No";
+		if(invalid || st.size() != 0) cout << "No";
 		else if(st.size() == 0) cout << "Yes";
 		
 		cout << endl;

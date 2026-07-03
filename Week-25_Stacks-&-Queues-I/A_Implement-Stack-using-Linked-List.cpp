@@ -43,7 +43,9 @@ public:
             Node* del = head;
             head = head->next;
             length--;
-            return del->val;
+            int val = del->val;
+            delete del;
+            return val;
         }
         
         return -1;
