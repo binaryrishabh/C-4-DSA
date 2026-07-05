@@ -51,6 +51,7 @@ public:
     Reverse the singly linked list and return the head of the reversed list.
 */
 
+// T.C.->O(N), S.C.-> O(1)
 Node* reverseList(Node* head) {
 	if(head == NULL || head->next == NULL) return head;
 	

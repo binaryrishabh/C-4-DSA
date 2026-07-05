@@ -56,16 +56,22 @@ public:
 // T.C. => O(N); S.C. => O(1)
 Node* deleteMiddle(Node* head) {
     if(head == NULL || head->next == NULL) return NULL;
-    
+
+    Node* mid = NULL;
     Node* slow = head;
-    Node* fast = head->next;
+    Node* fast = head;
     
     while(fast != NULL && fast->next != NULL) {
+        mid = slow;
         slow = slow->next;
         fast = fast->next->next;
     }
     
-    slow->next = slow->next->next;
+    mid->next = mid->next->next;
+    slow = NULL;
+    fast = NULL;
+    delete slow;
+    delete fast;
     
     return head;
 }

@@ -50,70 +50,84 @@ public:
     Implement only the class below.
 */
 
+// We have both head & tail pointers. 
+// So adding at tail takes O(1)
+
 class MyLinkedList {
 private:
-    Node* head;
+    Node* headNode;
+    Node* tailNode;
     int size;
     
+    // T.C.-> O(K)
     Node* getKthNode(int index) {
-        Node* temp = head;
+        Node* temp = headNode;
         
-        while(index > 0) {
+        while(index > 1) {
             temp = temp->next;
             index--;
         }
         
         return temp;
     }
-    
 public:
     MyLinkedList(Node* head) {
-        this->head = head;
+        // implement
+        headNode = head;
         size = 0;
+        
+        Node* temp = head;
+        
+        while(temp != NULL) {
+            tailNode = temp;
+            temp = temp->next;
+            size++;
+        }
     }
-
+    
+    // T.C.-> O(K)
     int get(int index) {
         // implement
         if(index < 0 || index >= size) return -1;
+            
+        Node* node = getKthNode(index + 1);
         
-        Node* temp = getKthNode(index);
-        
-        return temp->val;
+        return node->val;
     }
-
+    
+    // T.C.-> O(1)
     void addAtHead(int val) {
         // implement
         Node* newNode = new Node(val);
-        newNode->next = head;
-        head = newNode;
-        
+        newNode->next = headNode;
+        // updating tailNode if list is empty.
+        if(size == 0) {
+            tailNode = newNode;
+        }
+        headNode = newNode;
         size++;
     }
-
+    
+    // T.C.-> O(1)
     void addAtTail(int val) {
         // implement
-        if(head == NULL) {
+        if(size == 0) {
             addAtHead(val);
             return;
         }
         
-        Node* temp = head;
-        
-        while(temp->next != NULL) {
-            temp = temp->next;
-        }
-        
         Node* newNode = new Node(val);
-        temp->next = newNode;
+        
+        tailNode->next = newNode;
+        tailNode = newNode;
         
         size++;
     }
 
+    // T.C.-> O(K)
     void addAtIndex(int index, int val) {
         // implement
-        if(index > size) {
-            return;
-        }
+        if(index > size) return;
         
         if(index <= 0) {
             addAtHead(val);
@@ -125,15 +139,17 @@ public:
             return;
         }
         
-        Node* temp = getKthNode(index - 1);
-        
         Node* newNode = new Node(val);
-        newNode->next = temp->next;
-        temp->next = newNode;
+        
+        Node* prev = getKthNode(index);
+        
+        newNode->next = prev->next;
+        prev->next = newNode;
         
         size++;
     }
 
+    // T.C.-> O(K)
     void deleteAtIndex(int index) {
         // implement
         if(index < 0 || index >= size) {
@@ -141,18 +157,24 @@ public:
         }
         
         if(index == 0) {
-            Node* del = head;
-            head = head->next;
+            Node* del = headNode;
+            headNode = headNode->next;
             delete del;
             size--;
             return;
-        }        
+        }
         
-        Node* temp = getKthNode(index - 1);
+        Node* temp = headNode;
         
-        Node* del = temp->next;
+        Node* prev = getKthNode(index);
         
-        temp->next = del->next;
+        Node* del = prev->next;
+        
+        if(index == size - 1) {
+            tailNode = prev;
+        }
+        
+        prev->next = prev->next->next;
         
         delete del;
         size--;
@@ -160,9 +182,121 @@ public:
 
     Node* getHead() {
         // implement
-        return head;
+        return headNode;
     }
 };
+
+
+// We only have head pointer.
+// So adding and removing at tail takes O(N)
+
+// class MyLinkedList {
+// private:
+//     Node* headNode;
+//     int size;
+    
+//     // T.C.-> O(K)
+//     Node* getKthNode(int index) {
+//         Node* temp = headNode;
+        
+//         while(index > 1) {
+//             temp = temp->next;
+//             index--;
+//         }
+        
+//         return temp;
+//     }
+// public:
+//     MyLinkedList(Node* head) {
+//         // implement
+//         headNode = head;
+//         size = 0;
+        
+//         Node* temp = head;
+        
+//         while(temp != NULL) {
+//             temp = temp->next;
+//             size++;
+//         }
+//     }
+    
+//     // T.C.-> O(K)
+//     int get(int index) {
+//         // implement
+//         if(index < 0 || index >= size) return -1;
+            
+//         Node* node = getKthNode(index + 1);
+        
+//         return node->val;
+//     }
+    
+//     // T.C.-> O(1)
+//     void addAtHead(int val) {
+//         // implement
+//         Node* newNode = new Node(val);
+//         newNode->next = headNode;
+//         headNode = newNode;
+//         size++;
+//     }
+    
+//     // T.C.-> O(N)
+//     void addAtTail(int val) {
+//         // implement
+//         addAtIndex(size, val);
+//     }
+
+//     // T.C.-> O(K)
+//     void addAtIndex(int index, int val) {
+//         // implement
+//         if(index > size) return;
+        
+//         if(index <= 0) {
+//             addAtHead(val);
+//             return;
+//         }
+        
+//         Node* newNode = new Node(val);
+        
+//         Node* prev = getKthNode(index);
+        
+//         newNode->next = prev->next;
+//         prev->next = newNode;
+        
+//         size++;
+//     }
+
+//     // T.C.-> O(K)
+//     void deleteAtIndex(int index) {
+//         // implement
+//         if(index < 0 || index >= size) {
+//             return;
+//         }
+        
+//         if(index == 0) {
+//             Node* del = headNode;
+//             headNode = headNode->next;
+//             delete del;
+//             size--;
+//             return;
+//         }
+        
+//         Node* temp = headNode;
+        
+//         Node* prev = getKthNode(index);
+        
+//         Node* del = prev->next;
+        
+//         prev->next = prev->next->next;
+        
+//         delete del;
+//         size--;
+//     }
+
+//     Node* getHead() {
+//         // implement
+//         return headNode;
+//     }
+// };
 
 int main() {
     ios::sync_with_stdio(false);

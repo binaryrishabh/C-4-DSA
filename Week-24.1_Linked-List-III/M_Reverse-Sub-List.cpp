@@ -52,41 +52,99 @@ public:
     and return the head of the modified list.
 */
 
-Node* reverseBetween(Node* head, int left, int right) {
-    Node* leftPrev = NULL;
-    Node* second = head;
-    
-    int reverse = right - left + 1;
-    
-    while(left > 1) {
-        leftPrev = second;
-        second = second->next;
-        left--;
-    }
-    
-    Node* leftNode = second;
-    
+// Best Approch
+/// T.C.-> O(N); S.C.-> O(1)
+void reverse(Node* leftNode) {
     Node* first = NULL;
-    Node* third = second->next;
+    Node* second = leftNode;
+    Node* third = leftNode->next;
     
-    while(reverse > 0) {
+    while(second != NULL) {
         second->next = first;
         first = second;
         second = third;
         if(third != NULL) third = third->next;
-        reverse--;
+    }
+}
+
+Node* reverseBetween(Node* head, int left, int right) {
+    if(head == NULL || head->next == NULL || left == right) return head;
+    
+    Node* leftNode = NULL;
+    Node* rightNode = NULL;
+    Node* leftPrev = NULL;
+    Node* rightNext = NULL;
+    
+    
+    Node* temp = head;
+    int index = 1;
+    while(temp != NULL) {
+        if(index == left - 1) {
+            leftPrev = temp;
+        }
+        else if(index == left) {
+            leftNode = temp;
+        }
+        else if(index == right) {
+            rightNode = temp;
+        }
+        else if(index == right + 1) {
+            rightNext = temp;
+        }
+        temp = temp->next;
+        index++;
     }
     
-    if(leftPrev != NULL) {
-        leftPrev->next = first;
-    }
-    else {
-        head = first;
-    }
-    leftNode->next = second;
+    if(leftPrev != NULL) leftPrev->next = NULL;
+    rightNode->next = NULL;
+    
+    reverse(leftNode);
+    
+    if(leftPrev == NULL) head = rightNode;
+    else leftPrev->next = rightNode;
+    
+    leftNode->next = rightNext;
     
     return head;
 }
+
+// Not clean code
+/// T.C.-> O(N); S.C.-> O(1)
+// Node* reverseBetween(Node* head, int left, int right) {
+//     Node* leftPrev = NULL;
+//     Node* second = head;
+    
+//     int reverse = right - left + 1;
+    
+//     while(left > 1) {
+//         leftPrev = second;
+//         second = second->next;
+//         left--;
+//     }
+    
+//     Node* leftNode = second;
+    
+//     Node* first = NULL;
+//     Node* third = second->next;
+    
+//     while(reverse > 0) {
+//         second->next = first;
+//         first = second;
+//         second = third;
+//         if(third != NULL) third = third->next;
+//         reverse--;
+//     }
+    
+//     if(leftPrev != NULL) {
+//         leftPrev->next = first;
+//     }
+//     else {
+//         head = first;
+//     }
+//     leftNode->next = second;
+    
+//     return head;
+// }
 
 int main()
 {

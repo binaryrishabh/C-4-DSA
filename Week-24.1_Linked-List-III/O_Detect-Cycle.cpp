@@ -54,6 +54,9 @@ public:
     Return true if the linked list has a cycle, otherwise false.
 */
 
+
+// Optimal
+// T.C.-> O(N); S.C.-> O(1)
 bool hasCycle(Node* head) {
     Node* slow = head;
     Node* fast = head->next;
@@ -66,6 +69,37 @@ bool hasCycle(Node* head) {
     
     return false;
 }
+
+// Improved-Hacky
+/// T.C.-> O(N); S.C.-> O(1)
+// bool hasCycle(Node* head) {
+//     const int VISITED = 1e8;
+    
+//     Node* temp = head;
+//     while(temp != NULL) {
+//         if(temp->val == VISITED) return true;
+//         temp->val = VISITED;
+//         temp = temp->next;
+//     }
+    
+//     return false;
+// }
+
+
+// Brute Force
+/// T.C.-> O(N); S.C.-> O(N)
+// bool hasCycle(Node* head) {
+//     set<Node*> set;
+    
+//     Node* temp = head;
+//     while(temp != NULL) {
+//         if(set.find(temp) != set.end()) return true;
+//         set.insert(temp);
+//         temp = temp->next;
+//     }
+    
+//     return false;
+// }
 
 int main()
 {

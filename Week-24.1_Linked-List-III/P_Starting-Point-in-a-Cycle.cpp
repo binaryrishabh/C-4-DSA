@@ -75,6 +75,23 @@ Node* detectCycle(Node* head) {
     return slow;
 }
 
+// Brute Force Approach Using Sets
+// T.C.-> O(N), S.C.-> O(N)
+// Node* detectCycle(Node* head) {
+//     unordered_set<Node*> set;
+    
+//     Node* temp = head;
+    
+//     while(temp != NULL) {
+//         if(set.find(temp) != set.end()) return temp;
+//         set.insert(temp);
+//         temp = temp->next;
+//     }
+    
+//     return NULL;
+// }
+
+
 int main()
 {
     ios::sync_with_stdio(false);
