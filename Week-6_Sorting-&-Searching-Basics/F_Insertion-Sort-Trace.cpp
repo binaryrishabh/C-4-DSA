@@ -31,20 +31,42 @@ signed main() {
 		cin >> vec[i];
 	}
 	
-	for(int i = 0; i < size - 1; i++) {
+	// Standard — Sorted on Left, Pushes Leftward
+	
+	for(int i = 1; i < size; i++) {
 		int shifts = 0;
-		for(int j = i + 1; j > 0; j--) {
-			if(vec[j] < vec[j - 1]) {
-				int temp = vec[j];
-				vec[j] = vec[j - 1];
-				vec[j - 1] = temp;
-			}
+		for(int j = i; j > 0; j--) {
+	        if(vec[j - 1] > vec[j]) {
+	            swap(vec[j - 1], vec[j]);
+	        }
 			else break;
 			shifts++;
 		}
 		
-		cout << "Pass " << i + 1 << ": ";
-		print(vec, i + 1);
+		cout << "Pass " << i << ": ";
+		print(vec, i);
 		cout << "shifts = " << shifts << endl;
 	}
+	
+	
+	
+	// Reverse — Sorted on Right, Pushes Rightward
+	// But according to this question this code will not give 
+	// correct shifts number for each iteration
+	/*
+	for(int i = size - 2; i >= 0; i--) {
+		int shifts = 0;
+	    for(int j = i; j < size - 1; j++) {
+	        if(vec[j] > vec[j + 1]) {
+	            swap(vec[j], vec[j + 1]);
+	        }
+			else break;
+			shifts++;
+		}
+		
+		cout << "Pass " << size - i - 1 << ": ";
+		print(vec, size - i - 1);
+		cout << "shifts = " << shifts << endl;
+	}
+	*/
 }
