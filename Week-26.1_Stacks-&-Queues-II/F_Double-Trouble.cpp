@@ -4,8 +4,9 @@ using namespace std;
 #define int long long
 #define endl '\n'
 
-// Approach Moving from right to left
+//Optimal Approach-> Moving from right to left
 // T.C.-> O(N), O(N)
+
 signed main() {
 	cin.tie(nullptr)->sync_with_stdio(false);
 	string s;
@@ -35,7 +36,8 @@ signed main() {
 }
 
 
-// Approach Moving from left to right
+
+// Improved Approach-> Moving from left to right
 // T.C.-> O(N), O(N)
 /*
 void reverse(string& str) {
@@ -79,5 +81,39 @@ signed main() {
 	reverse(str);
 	
 	cout << str;
+}
+*/
+
+// Brute-Force Approach
+// T.C.-> O(N^2), O(N) will give TLE for this question 
+// constraints -> 10^5
+/*
+signed main() {
+	cin.tie(nullptr)->sync_with_stdio(false);
+	string s;
+	cin >> s;
+	
+	while(true) {
+		string t = "";
+		
+		int i;
+		for(i = 0; i < s.size() - 1; i++) {
+			if(s[i] == s[i + 1]) { // skip two characters
+				i++;
+			}
+			else {
+				t += s[i];
+			}
+		}
+		
+		if(i == (s.size() - 1)) {
+			t += s[s.size() - 1];
+		}
+		
+		if(s == t) break;
+		s = t;
+	}
+	
+	cout << s << endl;
 }
 */

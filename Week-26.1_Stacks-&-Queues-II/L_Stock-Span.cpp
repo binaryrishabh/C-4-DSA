@@ -4,9 +4,6 @@ using namespace std;
 #define int long long
 #define endl '\n'
 
-
-// Optimal Approach
-// T.C.-> O(N), O(N)
 signed main() {
 	cin.tie(nullptr)->sync_with_stdio(false);
 	int size;
@@ -18,21 +15,18 @@ signed main() {
 		cin >> vec[i];
 	}
 	
-	stack<int> st;
+	stack<pair<int, int>> st;
 	
-	for(int i = 0; i < vec.size(); i++) {
-		while(!st.empty() && st.top() <= vec[i]) {
+	for(int i = 0; i < size; i++) {
+		int count = 1;
+		
+		while(!st.empty() && st.top().first <= vec[i]) {
+			count += st.top().second;
 			st.pop();
 		}
+			
+		st.push({vec[i], count});
 		
-		if(!st.empty()) {
-			cout << st.top();
-		}
-		else {
-			cout<< "X";
-		}
-		
-		st.push(vec[i]);
-		cout << " ";
+		cout << st.top().second << " ";
 	}
 }
