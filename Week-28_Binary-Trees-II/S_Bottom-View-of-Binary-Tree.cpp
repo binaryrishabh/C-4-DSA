@@ -1,0 +1,104 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode *left, *right;
+    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+TreeNode* buildTree(const vector<string>& nodes) {
+    if (nodes.empty() || nodes[0] == "null") return nullptr;
+
+    TreeNode* root = new TreeNode(stoi(nodes[0]));
+    queue<TreeNode*> q;
+    q.push(root);
+
+    int i = 1;
+    while (!q.empty() && i < (int)nodes.size()) {
+        TreeNode* cur = q.front();
+        q.pop();
+
+        if (nodes[i] != "null") {
+            cur->left = new TreeNode(stoi(nodes[i]));
+            q.push(cur->left);
+        }
+        i++;
+
+        if (i < (int)nodes.size() && nodes[i] != "null") {
+            cur->right = new TreeNode(stoi(nodes[i]));
+            q.push(cur->right);
+        }
+        i++;
+    }
+    return root;
+}
+
+/*
+    Implement only the function below.
+    Return the bottom view of the binary tree (left to right).
+*/
+// Optimal Approach-> USES DFS
+// T.C.-> O(N), S.C.-> O(range)
+struct node {
+	int val;
+	int row;
+};
+
+void dfs(TreeNode* root, int row, int col, int& start, int& end, unordered_map<int, node>& map) {
+	if(root == NULL) {
+		return;
+	}
+	
+	if(map.find(col) == map.end()) {
+		map[col] = {root->val, row};
+	}
+	else if(map[col].row <= row) {
+		map[col] = {root->val, row};
+	}
+	
+	start = min(start, col);
+	end = max(end, col);
+	
+	dfs(root->left, row + 1, col - 1, start, end, map);
+	dfs(root->right, row + 1, col + 1, start, end, map);
+}
+
+vector<int> bottomView(TreeNode* root) {
+	unordered_map<int, node> map;
+	
+	int start = INT_MAX, end = INT_MIN;
+	
+	dfs(root, 0, 0, start, end, map);
+		
+	vector<int> vec;
+	
+	for(int i = start; i <= end; i++) {
+		vec.push_back(map[i].val);
+	}
+	
+	return vec;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+
+    vector<string> nodes(n);
+    for (int i = 0; i < n; i++) cin >> nodes[i];
+
+    TreeNode* root = buildTree(nodes);
+
+    vector<int> ans = bottomView(root);
+
+    for (int i = 0; i < (int)ans.size(); i++) {
+        if (i) cout << " ";
+        cout << ans[i];
+    }
+    cout << '\n';
+
+    return 0;
+}
