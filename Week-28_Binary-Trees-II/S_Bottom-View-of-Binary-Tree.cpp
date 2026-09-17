@@ -38,8 +38,52 @@ TreeNode* buildTree(const vector<string>& nodes) {
     Implement only the function below.
     Return the bottom view of the binary tree (left to right).
 */
+
+// Optimal Approach-> USES BFS
+// T.C.-> O(N), S.C.-> O(range)
+
+vector<int> bottomView(TreeNode* root) {
+	unordered_map<int, int> map;
+	
+	queue<pair<TreeNode*, int>> que;
+	
+	que.push({root, 0});
+	
+	int start = INT_MAX, end = INT_MIN;
+	
+	while(!que.empty()) {
+		pair<TreeNode*, int> point = que.front();
+		que.pop();
+		
+		TreeNode* node = point.first;
+		int col = point.second;
+		
+		map[col] = node->val;
+		
+		start = min(start, col);
+		end = max(end, col);
+		
+		if(node->left) {
+			que.push({ node->left, col - 1 });
+		}
+		if(node->right) {
+			que.push({ node->right, col + 1 });
+		}
+	}
+	
+	vector<int> vec;
+	for(int i = start; i <= end; i++) {
+		vec.push_back(map[i]);
+	}
+	
+	return vec;
+}
+
+
+
 // Optimal Approach-> USES DFS
 // T.C.-> O(N), S.C.-> O(range)
+/*
 struct node {
 	int val;
 	int row;
@@ -79,6 +123,8 @@ vector<int> bottomView(TreeNode* root) {
 	
 	return vec;
 }
+*/
+
 
 int main() {
     ios::sync_with_stdio(false);
